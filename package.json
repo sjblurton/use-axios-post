@@ -33,7 +33,19 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "use-axios-post",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sjblurton/use-axios-post"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "custom",
+    "typescript",
+    "test",
+    "testing"
+  ],
+  "name": "@sjblurton/use-axios-post",
   "author": "Simon Blurton",
   "module": "dist/use-axios-post.esm.js",
   "size-limit": [
