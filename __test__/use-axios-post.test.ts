@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { url200, body, url404, url500 } from '../src/constants';
+import { url200, data, url404, url500 } from '../src/constants';
 import useAxiosPost from '../src';
 
 import { server } from '../src/mocks/server';
@@ -30,7 +30,7 @@ describe('useMediaQuery hook testing.', () => {
   it('should return status pending', () => {
     const { result } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url200, data: body });
+      result.current[1]({ url: url200, data });
     });
     expect(result.current[0]).toBe('pending');
   });
@@ -38,7 +38,7 @@ describe('useMediaQuery hook testing.', () => {
   it('should return status success', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url200, data: body });
+      result.current[1]({ url: url200, data });
     });
     await waitForNextUpdate();
     expect(result.current[0]).toBe('success');
@@ -47,7 +47,7 @@ describe('useMediaQuery hook testing.', () => {
   it('should return response 200', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url200, data: body });
+      result.current[1]({ url: url200, data });
     });
     await waitForNextUpdate();
     expect(result.current[3]?.status).toBe(200);
@@ -55,19 +55,22 @@ describe('useMediaQuery hook testing.', () => {
 
   it('should return response data to be the post data', async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useAxiosPost<{ name: string; job: string }>()
+      useAxiosPost<
+        { name: string; job: string },
+        { name: string; job: string }
+      >()
     );
     act(() => {
-      result.current[1]({ url: url200, data: body });
+      result.current[1]({ url: url200, data });
     });
     await waitForNextUpdate();
-    expect(result.current[3]?.data.name).toBe(body.name);
+    expect(result.current[3]?.data.name).toBe(data.name);
   });
 
   it('should return status error', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url404, data: body });
+      result.current[1]({ url: url404, data });
     });
     await waitForNextUpdate();
     expect(result.current[0]).toBe('error');
@@ -76,7 +79,7 @@ describe('useMediaQuery hook testing.', () => {
   it('should return error message 404 error', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url404, data: body });
+      result.current[1]({ url: url404, data });
     });
     await waitForNextUpdate();
     expect(result.current[2]?.message).toBe(
@@ -87,7 +90,7 @@ describe('useMediaQuery hook testing.', () => {
   it('should return error message 500 error', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAxiosPost());
     act(() => {
-      result.current[1]({ url: url500, data: body });
+      result.current[1]({ url: url500, data });
     });
     await waitForNextUpdate();
     expect(result.current[2]?.message).toBe(
