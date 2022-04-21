@@ -5,7 +5,7 @@ type Status = 'idle' | 'pending' | 'success' | 'error';
 
 function useAxiosPost<D = any, T = any>(): [
   Status,
-  React.Dispatch<React.SetStateAction<AxiosRequestConfig | undefined>>,
+  React.Dispatch<React.SetStateAction<AxiosRequestConfig<D> | undefined>>,
   AxiosError<T, D> | undefined,
   AxiosResponse<T, D> | undefined
 ] {
