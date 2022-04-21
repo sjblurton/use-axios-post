@@ -19,7 +19,7 @@ import useAxiosPost from "@sjblurton/use-axios-post";
 ### **To call the hook...**
 
 ```bash
-const [status, setPost, error, response] = useAxiosPost();
+const [status, setPost, error, response] = useAxiosPost<RequestData, ServerResponseData>();
 ```
 
 ### **status**
