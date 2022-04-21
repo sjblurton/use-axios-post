@@ -1,12 +1,12 @@
 import { rest } from 'msw';
-import { url200, post, url404, url500 } from '../constants';
+import { url200, body, url404, url500 } from '../constants';
 
 export const handlers = [
   rest.post(url200, (_, res, ctx) => {
     return res(
       // Respond with a 200 status code
       ctx.status(200),
-      ctx.body(JSON.stringify(post))
+      ctx.body(JSON.stringify(body))
     );
   }),
   rest.post(url404, (_, res, ctx) => {

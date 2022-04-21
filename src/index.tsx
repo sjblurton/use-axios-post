@@ -1,35 +1,31 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 
 type Status = 'idle' | 'pending' | 'success' | 'error';
-type Req<PostBody> = {
-  url: string;
-  post: PostBody;
-};
 
-const useAxiosPost = <PostBody,>(
-  req?: Req<PostBody>
-): [
+function useAxiosPost<D>(): [
   Status,
-  React.Dispatch<React.SetStateAction<Req<PostBody> | undefined>>,
+  React.Dispatch<React.SetStateAction<AxiosRequestConfig<D> | undefined>>,
   AxiosError | undefined,
-  AxiosResponse<PostBody, any> | undefined
-] => {
+  AxiosResponse<any, any> | undefined
+] {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<AxiosError | undefined>(undefined);
-  const [axiosReq, setAxiosReq] = useState(req);
-  const [axiosRes, setAxiosRes] = useState<
-    AxiosResponse<PostBody, any> | undefined
-  >(undefined);
+  const [axiosReq, setAxiosReq] = useState<AxiosRequestConfig<D> | undefined>(
+    undefined
+  );
+  const [axiosRes, setAxiosRes] = useState<AxiosResponse<D, any> | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const call = async () => {
-      if (axiosReq) {
+      if (axiosReq?.url) {
         try {
           setStatus('pending');
-          const res: AxiosResponse<PostBody, any> = await axios.post(
+          const res: AxiosResponse<D, any> = await axios.post(
             axiosReq.url,
-            axiosReq.post
+            axiosReq
           );
           setAxiosRes(res);
           setStatus('success');
@@ -44,6 +40,6 @@ const useAxiosPost = <PostBody,>(
   }, [axiosReq]);
 
   return [status, setAxiosReq, error, axiosRes];
-};
+}
 
 export default useAxiosPost;
